@@ -10,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Remove from S3
-      uses:  actions/checkout@dx@scale
+    - name: Checkout Repo dx@scale branch and s3 remove folder
+        id: Checkout
+      uses: actions/checkout@v3
       with:
         args: --recursive
       env:
