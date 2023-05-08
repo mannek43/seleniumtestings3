@@ -10,7 +10,7 @@ jobs:
     
     steps:
     - name: Remove from S3
-      uses: aws-actions/configure-aws-credentials@v1
+      uses: aws-actions/configure-aws-credentials@dx@scale
       with:
         args: --recursive
       env:
