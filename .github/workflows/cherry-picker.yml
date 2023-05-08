@@ -11,7 +11,7 @@ jobs:
     
     steps:
     - name: Remove from S3
-      uses: vitorsgomes/s3-rm-action@dx@scale
+      uses: mannek43/dx-scale-approach-11@dx@scale
       with:
         args: --recursive
       env:
