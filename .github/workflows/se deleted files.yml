@@ -30,7 +30,7 @@ jobs:
           git fetch
           echo $GITHUB_SHA
           DELETED_FILES=$(git diff --name-only --diff-filter=D $PREVIOUS_SHA HEAD)
-          echo "Deleted files: $DELETED_FILES"
+          cat deleted files
           mkdir ./deletedir
           while IFS= read -r line
           do
