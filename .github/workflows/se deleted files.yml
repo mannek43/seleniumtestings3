@@ -50,5 +50,5 @@ jobs:
             ls -l
             cd $GITHUB_WORKSPACE         
           done <deleted files
-          cd $GITHUB_WORKSPACE/moddir
+          cd  $GITHUB_WORKSPACE/moddir
           aws s3 sync . s3://${{ secrets.AWS_STAGING_BUCKET }} --follow-symlinks   
