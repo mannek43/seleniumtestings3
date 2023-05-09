@@ -23,7 +23,7 @@ jobs:
           aws-region: eu-west-1
       - name: get the list of deleted files
         shell: bash
-        run: |
+        run:  |
           pwd
           ls
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
