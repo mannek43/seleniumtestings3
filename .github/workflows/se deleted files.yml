@@ -1,0 +1,54 @@
+name: Identify and upload deleted files to S3 bucket 
+
+on: 
+  push:
+    branches: dx@scale # Need to delete (changing main branch for testing)
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout Repository main Branch
+        id: checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+      - name: get the list of deleted files
+        shell: bash
+        run:  |
+          pwd
+          ls
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git fetch
+          echo $GITHUB_SHA
+          DELETED_FILES=$(git diff --name-only --diff-filter=D $PREVIOUS_SHA HEAD)
+          echo "Deleted files: $DELETED_FILES"
+          mkdir ./deletedir
+          while IFS= read -r line
+          do
+            echo "$line"
+            if [[ $line =~ ^.github/* ]]; then
+            continue
+            fi
+            uploadfile=$(echo "$line")
+            mkdir -p deletedir/$uploadfile
+            cd deletedir/$uploadfile
+            pwd
+            cd ..
+            pwd
+            uploadfolder=$(pwd)
+            rm -rf *
+            cp -rv  $GITHUB_WORKSPACE/$line $uploadfolder/
+            ls -l
+            cd $GITHUB_WORKSPACE         
+          done <deleted files
+          cd  $GITHUB_WORKSPACE/moddir
+          aws s3 sync . s3://${{ secrets.AWS_STAGING_BUCKET }} --follow-symlinks   
